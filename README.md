@@ -52,26 +52,27 @@ input/fonts/*.xml	frontend/fonts/*.xml
 
 ### 3. Run
 
-**Auto-detection mode** (easiest):
-```bash
-modpacker.exe
-```
-Automatically looks for:
+Simply double-click `modpacker.exe` - that's it!
+
+It automatically finds:
 - `manifest.tsv` in the current directory
 - `.nefs` file in the `nefs/` subfolder
 
-**Manual mode**:
+*(Advanced: Use `--archive` or `--manifest` options if your files are in different locations)*
+
+## Advanced Usage
+
+### Useful Options
+
+Most users won't need these, but here are some helpful options:
+
 ```bash
-modpacker.exe --archive nefs/game.nefs --manifest manifest.tsv
+modpacker.exe --dry-run           # Preview changes without applying
+modpacker.exe --archive "C:\path\to\game.nefs"  # Use different .nefs location
 ```
 
-## Usage
-
-### Command-line Options
-
-```bash
-modpacker.exe [options]
-```
+<details>
+<summary>All Command-line Options (click to expand)</summary>
 
 | Option | Description | Default |
 |--------|-------------|---------|
@@ -84,32 +85,7 @@ modpacker.exe [options]
 | `--dry-run` | Validate only, don't save changes | `false` |
 | `--log <path>` | Log file path | `modpacker.log` |
 
-### Examples
-
-**Basic usage with auto-detection:**
-```bash
-modpacker.exe
-```
-
-**Specify archive explicitly:**
-```bash
-modpacker.exe --archive "C:\Games\MyGame\data.nefs" --manifest manifest.tsv
-```
-
-**Dry-run (preview changes without applying):**
-```bash
-modpacker.exe --dry-run
-```
-
-**Custom backup location:**
-```bash
-modpacker.exe --backup-dir my_backups
-```
-
-**Fail on missing files:**
-```bash
-modpacker.exe --on-missing fail
-```
+</details>
 
 ## Manifest Format
 
