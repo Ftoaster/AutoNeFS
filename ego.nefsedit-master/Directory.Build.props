@@ -1,0 +1,10 @@
+<Project>
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>true</ImplicitUsings>
+		<UseArtifactsOutput>true</UseArtifactsOutput>
+
+		<Copyright>Copyright © VictorBush 2021</Copyright>
+		<Version>0.7.1</Version>
+	</PropertyGroup>
+</Project>

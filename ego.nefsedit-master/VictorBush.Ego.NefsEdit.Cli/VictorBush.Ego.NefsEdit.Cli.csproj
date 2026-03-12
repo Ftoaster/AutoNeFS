@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<AssemblyName>modpacker</AssemblyName>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Title>NeFS ModPacker CLI</Title>
+		<ApplicationIcon>..\..\icon.ico</ApplicationIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\VictorBush.Ego.NefsLib\VictorBush.Ego.NefsLib.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging" />
+		<PackageReference Include="Serilog.Extensions.Logging" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="System.IO.Abstractions" />
+	</ItemGroup>
+</Project>
+

@@ -1,0 +1,11 @@
+# localFilePath	targetPath
+# First column: Local replacement file path (supports wildcards)
+# Second column: Target path in archive (supports wildcards)
+# NOTE: Fields must be separated by TAB, not spaces!
+# Examples:
+input\subtitles\*.xml	subtitles\eng\*.xml
+input\fonts\*.pssg	frontend\fonts\*.pssg
+input\fonts\*.xml	frontend\fonts\*.xml
+input\fonts_texture\*.pssg	frontend\bundles\*.pssg
+input\language\*.xml	language\*xml
+input\system\*.xml	system\*.xml
