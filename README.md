@@ -166,24 +166,40 @@ pause
 
 ## Project Structure
 
+### Repository Structure
+
 ```
 AutoNefsedit/
-├── modpacker.exe              # Main executable
+├── modpacker.exe              # Main executable (ready to use)
 ├── manifest.tsv               # Manifest template
 ├── icon.ico                   # Application icon
-├── LICENSE                    # License file
-├── README.md                  # This file
-├── input/                     # Your replacement files (empty by default)
-├── nefs/                      # Place your .nefs files here
-├── publish_single/            # Build artifacts
+├── .gitignore                 # Git ignore rules
+├── LICENSE                    # MIT License
+├── README.md                  # This documentation
 └── ego.nefsedit-master/       # Source code
     ├── VictorBush.Ego.NefsLib/         # NeFS library
     ├── VictorBush.Ego.NefsEdit/        # GUI version (original)
     └── VictorBush.Ego.NefsEdit.Cli/    # CLI version (this tool)
-        ├── Program.cs
-        ├── CliOptions.cs
-        ├── ManifestParser.cs
-        └── ArchivePatcher.cs
+        ├── Program.cs                  # Entry point
+        ├── CliOptions.cs               # Command-line parser
+        ├── ManifestParser.cs           # Manifest parser
+        └── ArchivePatcher.cs           # Archive patcher
+```
+
+### Working Directory Structure
+
+When using the tool, create this structure:
+
+```
+YourProject/
+├── modpacker.exe              # Downloaded from releases
+├── manifest.tsv               # Your manifest file
+├── input/                     # Create: Your replacement files
+│   ├── fonts/
+│   ├── textures/
+│   └── ...
+└── nefs/                      # Create: Your .nefs files
+    └── game.nefs
 ```
 
 ## Build from Source
