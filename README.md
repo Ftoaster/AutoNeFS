@@ -148,21 +148,17 @@ input/sounds/*.bnk	audio/engine/*/sound_*.bnk
 - `vehicles/*/body.dds` → `body.dds` in any subfolder of `vehicles/`
 - `audio/?.bnk` → Single-character named `.bnk` files
 
-## Batch Script Example
+## Advanced: Batch Script (Optional)
 
-Create `run_modpack.bat` for automated execution:
+Only needed if you want to specify custom paths or options:
 
 ```bat
 @echo off
-modpacker.exe --archive "C:\Games\YourGame\data.nefs" --manifest manifest.tsv
-if %ERRORLEVEL% NEQ 0 (
-  echo Error occurred. Check modpacker.log for details.
-  pause
-  exit /b 1
-)
-echo Successfully patched!
+modpacker.exe --archive "C:\Games\YourGame\data.nefs"
 pause
 ```
+
+For most users, just double-click `modpacker.exe` - it will auto-detect everything!
 
 ## Project Structure
 
