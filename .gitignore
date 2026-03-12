@@ -102,9 +102,7 @@ fonts/*
 # Backup folder copies
 input - 복사본/
 
-# Only include the final modpacker.exe, not the huge source builds
-publish_single/*.pdb
-publish_single/*.xml
+# Build artifacts - exclude entire folder
+publish_single/
 
-# Keep published binary in root for distribution
-# modpacker.exe in root should be committed
+# Keep only the main modpacker.exe in root for distribution
