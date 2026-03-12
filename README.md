@@ -4,7 +4,7 @@ A command-line tool for batch replacement of files in NeFS archive files, automa
 
 ## Overview
 
-The original NeFSedit GUI required manual file-by-file replacement. AutoNefsedit automates this process using manifest files, enabling efficient batch operations for game modding.
+The original NeFSedit GUI required manual file-by-file replacement. AutoNeFS automates this process using manifest files, enabling efficient batch operations for game modding.
 
 ### Key Features
 
@@ -141,7 +141,7 @@ For most users, just double-click `AutoNeFS.exe` - it will auto-detect everythin
 ### Repository Structure
 
 ```
-AutoNefsedit/
+AutoNeFS/
 ├── AutoNeFS.exe              # Main executable (ready to use)
 ├── manifest.tsv               # Manifest template
 ├── icon.ico                   # Application icon
@@ -256,7 +256,7 @@ See `LICENSE` for details.
 ## Credits
 
 - **Original Library**: [VictorBush/ego.nefsedit](https://github.com/VictorBush/ego.nefsedit) - NeFS library and GUI tool
-- **CLI Automation**: AutoNefsedit Project - Command-line interface and batch processing
+- **CLI Automation**: AutoNeFS Project - Command-line interface and batch processing
 
 ## Support
 
