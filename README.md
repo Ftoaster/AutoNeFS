@@ -1,4 +1,4 @@
-# AutoNefsedit - NeFS ModPacker CLI
+# AutoNeFS
 
 A command-line tool for batch replacement of files in NeFS archive files, automating the modding workflow for Ego Engine games.
 
@@ -27,7 +27,7 @@ The original NeFSedit GUI required manual file-by-file replacement. AutoNefsedit
 
 ```
 YourProject/
-├── modpacker.exe
+├── AutoNeFS.exe
 ├── manifest.tsv          # Your file replacement list
 ├── input/                # Your replacement files
 │   ├── subtitles/
@@ -52,7 +52,7 @@ input/fonts/*.xml	frontend/fonts/*.xml
 
 ### 3. Run
 
-Simply double-click `modpacker.exe` - that's it!
+Simply double-click `AutoNeFS.exe` - that's it!
 
 It automatically finds:
 - `manifest.tsv` in the current directory
@@ -67,8 +67,8 @@ It automatically finds:
 Most users won't need these, but here are some helpful options:
 
 ```bash
-modpacker.exe --dry-run           # Preview changes without applying
-modpacker.exe --archive "C:\path\to\game.nefs"  # Use different .nefs location
+AutoNeFS.exe --dry-run           # Preview changes without applying
+AutoNeFS.exe --archive "C:\path\to\game.nefs"  # Use different .nefs location
 ```
 
 <details>
@@ -83,7 +83,7 @@ modpacker.exe --archive "C:\path\to\game.nefs"  # Use different .nefs location
 | `--on-missing <action>` | Action when target not found (`skip`\|`fail`) | `skip` |
 | `--continue-on-error` | Continue processing on individual failures | `true` |
 | `--dry-run` | Validate only, don't save changes | `false` |
-| `--log <path>` | Log file path | `modpacker.log` |
+| `--log <path>` | Log file path | `AutoNeFS.log` |
 
 </details>
 
@@ -130,11 +130,11 @@ Only needed if you want to specify custom paths or options:
 
 ```bat
 @echo off
-modpacker.exe --archive "C:\Games\YourGame\data.nefs"
+AutoNeFS.exe --archive "C:\Games\YourGame\data.nefs"
 pause
 ```
 
-For most users, just double-click `modpacker.exe` - it will auto-detect everything!
+For most users, just double-click `AutoNeFS.exe` - it will auto-detect everything!
 
 ## Project Structure
 
@@ -142,7 +142,7 @@ For most users, just double-click `modpacker.exe` - it will auto-detect everythi
 
 ```
 AutoNefsedit/
-├── modpacker.exe              # Main executable (ready to use)
+├── AutoNeFS.exe              # Main executable (ready to use)
 ├── manifest.tsv               # Manifest template
 ├── icon.ico                   # Application icon
 ├── .gitignore                 # Git ignore rules
@@ -164,7 +164,7 @@ When using the tool, create this structure:
 
 ```
 YourProject/
-├── modpacker.exe              # Downloaded from releases
+├── AutoNeFS.exe              # Downloaded from releases
 ├── manifest.tsv               # Your manifest file
 ├── input/                     # Create: Your replacement files
 │   ├── fonts/
@@ -197,7 +197,7 @@ dotnet publish VictorBush.Ego.NefsEdit.Cli/VictorBush.Ego.NefsEdit.Cli.csproj \
   -p:PublishTrimmed=false
 ```
 
-Output location: `artifacts/publish/VictorBush.Ego.NefsEdit.Cli/release_win-x64/modpacker.exe`
+Output location: `artifacts/publish/VictorBush.Ego.NefsEdit.Cli/release_win-x64/AutoNeFS.exe`
 
 ## Troubleshooting
 
@@ -223,10 +223,10 @@ Output location: `artifacts/publish/VictorBush.Ego.NefsEdit.Cli/release_win-x64/
 
 ### Log File
 
-Operations are logged to `modpacker.log`:
+Operations are logged to `AutoNeFS.log`:
 
 ```
-[INF] ModPacker started
+[INF] AutoNeFS started
 [INF] Archive: nefs/game.nefs
 [INF] Loaded 5 manifest items
 [INF] ✓ ui/logo.png
@@ -261,7 +261,7 @@ See `LICENSE` for details.
 ## Support
 
 For issues, questions, or contributions:
-1. Check `modpacker.log` for detailed error messages
+1. Check `AutoNeFS.log` for detailed error messages
 2. Use the original [NeFSedit GUI](https://github.com/VictorBush/ego.nefsedit) to inspect archive structure
 3. Verify your `manifest.tsv` uses TAB characters (not spaces)
 4. Report issues on the GitHub repository
