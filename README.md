@@ -1,136 +1,166 @@
 # AutoNefsedit - NeFS ModPacker CLI
 
-A CLI tool for automatically patching NeFS archive files based on manifest files.
+A command-line tool for batch replacement of files in NeFS archive files, automating the modding workflow for Ego Engine games.
 
-## Project Overview
+## Overview
 
-The original NeFSedit GUI required manual file-by-file replacement. This project provides an automation tool that enables batch replacement of multiple files using manifest files.
+The original NeFSedit GUI required manual file-by-file replacement. AutoNefsedit automates this process using manifest files, enabling efficient batch operations for game modding.
 
 ### Key Features
 
-- ✅ **Manifest-based Batch Replacement**: Easy task definition using TSV format
-- ✅ **Wildcard Support**: Replace multiple files at once using patterns (*.xml)
-- ✅ **Automatic Backup**: Original files are backed up before operation
-- ✅ **Headless Execution**: Run via batch scripts without GUI
-- ✅ **Detailed Logging**: Comprehensive reports of success/failure for each item
-- ✅ **Safe Rollback**: Automatic recovery on error
+- ✅ **Manifest-based Batch Replacement**: Define multiple file operations in a simple TSV format
+- ✅ **Wildcard Support**: Replace multiple files at once using patterns (`*.xml`, `*.dds`, etc.)
+- ✅ **Automatic Backup**: Original files are backed up before any operation
+- ✅ **Headless Execution**: Run without GUI, perfect for automated workflows
+- ✅ **Detailed Logging**: Comprehensive reports of success/failure for each operation
+- ✅ **Auto-detection**: Simply double-click the executable - it finds `.nefs` files and manifest automatically
 
 ### Limitations
 
-- **Only 'replace' action supported**: Insert and remove actions are not implemented
-- **Read-only for archive structure**: Cannot add new files or remove existing ones
-- **Files in manifest only**: Only files listed in manifest.tsv are modified
+- **Replace only**: Insert and remove operations are not implemented
+- **Archive structure is read-only**: Cannot add new files or modify directory structure
+- **Manifest files only**: Only files listed in manifest.tsv are processed
 
 ## Quick Start
 
-### 1. Create Manifest File (`manifest.tsv`)
+### 1. Prepare Your Files
+
+```
+YourProject/
+├── modpacker.exe
+├── manifest.tsv          # Your file replacement list
+├── input/                # Your replacement files
+│   ├── subtitles/
+│   ├── fonts/
+│   └── ...
+└── nefs/
+    └── game.nefs         # Target archive
+```
+
+### 2. Create Manifest File (`manifest.tsv`)
 
 ```tsv
 # localFilePath	targetPath
-mods/ui/car_a.png	ui/icons/car_a.png
-mods/textures/new_texture.dds	vehicles/car_a/*.dds
+input/ui/icon.png	ui/icons/icon.png
+input/textures/body.dds	vehicles/car_a/*.dds
+input/fonts/*.xml	frontend/fonts/*.xml
 ```
 
-- **localFilePath** (first column): Path to the local replacement file
-- **targetPath** (second column): Path inside the `.nefs` archive (supports wildcards: * and ?)
+- **First column** (`localFilePath`): Path to your replacement file (supports wildcards)
+- **Second column** (`targetPath`): Path inside the `.nefs` archive (supports wildcards)
+- **Separator**: Use TAB character (not spaces!)
 
-### 2. Execute
+### 3. Run
 
-```bat
-modpacker.exe --archive game.nefs --manifest manifest.tsv
+**Auto-detection mode** (easiest):
+```bash
+modpacker.exe
 ```
+Automatically looks for:
+- `manifest.tsv` in the current directory
+- `.nefs` file in the `nefs/` subfolder
 
-Or use the batch file:
-
-```bat
-run_modpack.bat
+**Manual mode**:
+```bash
+modpacker.exe --archive nefs/game.nefs --manifest manifest.tsv
 ```
 
 ## Usage
 
-### Basic Command
+### Command-line Options
 
 ```bash
-modpacker.exe --archive <archive_path> --manifest <manifest_path>
+modpacker.exe [options]
 ```
-
-### Options
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `--archive` | Target .nefs file path (required) | - |
-| `--manifest` | Manifest file path (required) | - |
-| `--backup-dir` | Backup folder | `<archive>.bak/` |
-| `--output` | Output file path | Overwrite original |
-| `--on-missing` | Action when target missing (`skip`\|`fail`) | `skip` |
-| `--continue-on-error` | Continue on individual failure | `true` |
-| `--dry-run` | Validate only without saving | `false` |
-| `--log` | Log file path | `modpacker.log` |
+| `--archive <path>` | Target .nefs file path | Auto-detect in `nefs/` |
+| `--manifest <path>` | Manifest file path | `manifest.tsv` |
+| `--backup-dir <path>` | Backup folder location | `<archive>.bak/` |
+| `--output <path>` | Output file path | Overwrite original |
+| `--on-missing <action>` | Action when target not found (`skip`\|`fail`) | `skip` |
+| `--continue-on-error` | Continue processing on individual failures | `true` |
+| `--dry-run` | Validate only, don't save changes | `false` |
+| `--log <path>` | Log file path | `modpacker.log` |
 
 ### Examples
 
-#### Basic Usage
+**Basic usage with auto-detection:**
 ```bash
-modpacker.exe --archive "C:\path\to\archive.nefs" --manifest manifest.tsv
+modpacker.exe
 ```
 
-#### Dry-run (Validation Only)
+**Specify archive explicitly:**
 ```bash
-modpacker.exe --archive archive.nefs --manifest manifest.tsv --dry-run
+modpacker.exe --archive "C:\Games\MyGame\data.nefs" --manifest manifest.tsv
 ```
 
-#### Specify Backup Directory
+**Dry-run (preview changes without applying):**
 ```bash
-modpacker.exe --archive archive.nefs --manifest manifest.tsv --backup-dir backup
+modpacker.exe --dry-run
+```
+
+**Custom backup location:**
+```bash
+modpacker.exe --backup-dir my_backups
+```
+
+**Fail on missing files:**
+```bash
+modpacker.exe --on-missing fail
 ```
 
 ## Manifest Format
 
-### TSV (Recommended)
+### TSV Format (Tab-Separated Values)
 
 ```tsv
 # Comments start with #
 # localFilePath	targetPath
-mods/icon.png	ui/icons/icon.png
-mods/body.dds	vehicles/car/*.dds
-mods/sound.bnk	audio/engine/*.bnk
+
+# Simple file replacement
+input/logo.png	ui/logo.png
+
+# Wildcard in target path
+input/car_texture.dds	vehicles/*/body.dds
+
+# Wildcard in both paths
+input/fonts/*.xml	frontend/fonts/*.xml
+
+# Multiple wildcards
+input/sounds/*.bnk	audio/engine/*/sound_*.bnk
 ```
 
-- Two fields separated by tab (`\t`): localFilePath and targetPath
-- **First column**: Local replacement file path
-- **Second column**: Target path in archive (supports wildcards)
-- Empty lines and comments (`#`) are ignored
-- Paths can use either forward (`/`) or backslash (`\`)
+**Important:**
+- Fields MUST be separated by TAB character (`\t`), not spaces
+- Empty lines and `#` comments are ignored
+- Paths can use forward slashes (`/`) or backslashes (`\`)
+- Relative paths are based on the working directory
 
 ### Wildcard Patterns
 
 - `*` - Matches any number of characters
 - `?` - Matches exactly one character
 
-Examples:
-- `ui/icons/*.png` - All PNG files in ui/icons/
-- `vehicles/*/body.dds` - body.dds in any subfolder of vehicles/
-- `audio/engine/?.bnk` - Single-character named .bnk files
+**Examples:**
+- `ui/icons/*.png` → All PNG files in `ui/icons/`
+- `vehicles/*/body.dds` → `body.dds` in any subfolder of `vehicles/`
+- `audio/?.bnk` → Single-character named `.bnk` files
 
 ## Batch Script Example
 
-`run_modpack.bat`:
+Create `run_modpack.bat` for automated execution:
 
 ```bat
 @echo off
-set ARCHIVE="C:\path\to\your\archive.nefs"
-set MANIFEST="%~dp0manifest.tsv"
-set BACKUP_DIR="%~dp0backup"
-
-modpacker.exe --archive %ARCHIVE% --manifest %MANIFEST% --backup-dir %BACKUP_DIR% --log "%~dp0modpacker.log"
-
+modpacker.exe --archive "C:\Games\YourGame\data.nefs" --manifest manifest.tsv
 if %ERRORLEVEL% NEQ 0 (
-  echo Patch failed. Check the log.
+  echo Error occurred. Check modpacker.log for details.
   pause
   exit /b 1
 )
-
-echo Complete!
+echo Successfully patched!
 pause
 ```
 
@@ -138,111 +168,112 @@ pause
 
 ```
 AutoNefsedit/
-├── modpacker.exe              # Executable
+├── modpacker.exe              # Main executable
 ├── manifest.tsv               # Manifest template
-├── run_modpack.bat            # Batch script example
-├── MODPACKER_DESIGN.md        # Design document
-└── ego.nefsedit-master/
-    ├── VictorBush.Ego.NefsLib/              # NeFS library
-    ├── VictorBush.Ego.NefsEdit/             # GUI version
-    └── VictorBush.Ego.NefsEdit.Cli/         # CLI version (new)
-        ├── Program.cs                       # Entry point
-        ├── CliOptions.cs                    # Command-line parser
-        ├── ManifestParser.cs                # Manifest parser
-        └── ArchivePatcher.cs                # Archive patcher
+├── icon.ico                   # Application icon
+├── LICENSE                    # License file
+├── README.md                  # This file
+├── input/                     # Your replacement files (empty by default)
+├── nefs/                      # Place your .nefs files here
+├── publish_single/            # Build artifacts
+└── ego.nefsedit-master/       # Source code
+    ├── VictorBush.Ego.NefsLib/         # NeFS library
+    ├── VictorBush.Ego.NefsEdit/        # GUI version (original)
+    └── VictorBush.Ego.NefsEdit.Cli/    # CLI version (this tool)
+        ├── Program.cs
+        ├── CliOptions.cs
+        ├── ManifestParser.cs
+        └── ArchivePatcher.cs
 ```
 
-## Build Instructions
+## Build from Source
 
 ### Requirements
 - .NET 8.0 SDK
 
 ### Build Commands
 
+**Standard build:**
 ```bash
 cd ego.nefsedit-master
 dotnet build VictorBush.Ego.NefsEdit.Cli/VictorBush.Ego.NefsEdit.Cli.csproj -c Release
 ```
 
-### Create Single Executable
-
+**Create single-file executable:**
 ```bash
-dotnet publish VictorBush.Ego.NefsEdit.Cli/VictorBush.Ego.NefsEdit.Cli.csproj `
-  -c Release `
-  -r win-x64 `
-  --self-contained true `
-  -p:PublishSingleFile=true `
+dotnet publish VictorBush.Ego.NefsEdit.Cli/VictorBush.Ego.NefsEdit.Cli.csproj \
+  -c Release \
+  -r win-x64 \
+  --self-contained true \
+  -p:PublishSingleFile=true \
   -p:PublishTrimmed=false
 ```
 
-Output: `artifacts/publish/VictorBush.Ego.NefsEdit.Cli/release_win-x64/modpacker.exe`
+Output location: `artifacts/publish/VictorBush.Ego.NefsEdit.Cli/release_win-x64/modpacker.exe`
 
 ## Troubleshooting
 
 ### Common Errors
 
-#### "Archive file not found"
-- If the path contains spaces or special characters, enclose it in quotes: `--archive "C:\My Game\data.nefs"`
+**"Archive file not found"**
+- Ensure `.nefs` file is in the `nefs/` folder, or use `--archive` to specify the path
+- Use quotes for paths with spaces: `--archive "C:\My Game\data.nefs"`
 
-#### "Replacement file not found"
-- Verify `localFilePath` in manifest matches actual file path
-- Relative paths are based on execution directory
+**"Replacement file not found"**
+- Check that `localFilePath` in manifest matches the actual file location
+- Relative paths are based on the current working directory
 
-#### "Target item not found"
-- Verify `targetPath` matches the path inside the archive
-- Case-insensitive (automatically normalized)
-- Default policy is `--on-missing skip`, or use `fail` to abort
+**"Target item not found"**
+- Verify `targetPath` matches the actual path inside the archive
+- Paths are case-insensitive
+- Default behavior is to skip (`--on-missing skip`), use `fail` to abort
 
-#### "Wildcard matched no files"
-- Check the wildcard pattern syntax
-- Use original NeFSedit GUI to inspect archive structure
-- Verify path separators (`/` vs `\`)
+**"Wildcard matched no files"**
+- Check wildcard pattern syntax
+- Use the original NeFSedit GUI to browse archive structure
+- Verify path separators match (`/` vs `\`)
 
 ### Log File
 
-Operation results are saved to `modpacker.log`:
+Operations are logged to `modpacker.log`:
 
 ```
 [INF] ModPacker started
-[INF] Archive: archive.nefs
-[INF] Loaded 3 manifest items
-[INF] ✓ ui/icons/car.png
-[INF] ✓ vehicles/*.dds (5 files replaced)
+[INF] Archive: nefs/game.nefs
+[INF] Loaded 5 manifest items
+[INF] ✓ ui/logo.png
+[INF] ✓ vehicles/*.dds (3 files replaced)
+[INF] ✓ frontend/fonts/*.xml (7 files replaced)
 [WRN] ⊘ audio/missing.bnk (target not found, skipped)
 [INF] === Operation completed ===
-[INF] Total items: 3
-[INF] Success: 6
+[INF] Total items: 5
+[INF] Success: 11
 [INF] Failed: 0
 [INF] Skipped: 1
 ```
 
-## Future Plans
-
-- [ ] JSON manifest format support
-- [ ] Parallel processing optimization
-- [ ] GUI tool for generating manifests
-- [ ] Conditional replacement (timestamp/hash comparison)
-
 ## Limitations & Known Issues
 
-1. **Insert/Remove Not Supported**: Only `replace` action is implemented
-2. **Archive Structure Immutable**: Cannot add new entries or modify directory structure
-3. **Wildcard with Same File**: All matched files are replaced with the same local file
-4. **No Encryption Support**: Encrypted archives may not be supported
+1. **Replace only**: Only the `replace` operation is implemented. Cannot insert new files or remove existing ones.
+2. **Archive structure is immutable**: Cannot add new entries or modify the directory structure.
+3. **Same file for wildcards**: When using wildcards, all matched files are replaced with the same source file.
+4. **No encryption support**: Encrypted archives may not be supported.
 
 ## License
 
-Follows the license of the original NeFSedit project. See `ego.nefsedit-master/LICENSE` for details.
+MIT License - Based on the original [ego.nefsedit](https://github.com/VictorBush/ego.nefsedit) project.
+
+See `LICENSE` for details.
 
 ## Credits
 
-- **Original Project**: [VictorBush/ego.nefsedit](https://github.com/VictorBush/ego.nefsedit)
-- **CLI Automation**: AutoNefsedit Project
+- **Original Library**: [VictorBush/ego.nefsedit](https://github.com/VictorBush/ego.nefsedit) - NeFS library and GUI tool
+- **CLI Automation**: AutoNefsedit Project - Command-line interface and batch processing
 
 ## Support
 
-If you encounter issues, check:
-1. `MODPACKER_DESIGN.md` - Detailed design documentation
-2. `modpacker.log` - Execution log
-3. Use original NeFSedit GUI to inspect archive structure
-4. Verify manifest.tsv format and paths
+For issues, questions, or contributions:
+1. Check `modpacker.log` for detailed error messages
+2. Use the original [NeFSedit GUI](https://github.com/VictorBush/ego.nefsedit) to inspect archive structure
+3. Verify your `manifest.tsv` uses TAB characters (not spaces)
+4. Report issues on the GitHub repository
